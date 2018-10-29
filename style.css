@@ -80,6 +80,14 @@ body {
     cursor: pointer;
 }
 
+#writeMusic:hover {
+    cursor: pointer;
+}
+
+#deleteMusic:hover {
+    cursor: pointer;
+}
+
 #musicalNotes {
     background-color: pink;
     position: absolute;
