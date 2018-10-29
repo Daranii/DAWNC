@@ -1,18 +1,20 @@
 header {
     text-align: center;
-    font-size: 2.8vh;
-    background-color: green;
+    font-size: 2.6vh;
+    font-family: 'Acme', sans-serif;
 }
 
 body {
-    background-color: yellow;
+    background-color: #666666;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 #volumeControl {
+    background-color: #435063;
     position: fixed;
-    top: 1%;
+    top: 2%;
     right: 0.5%;
     height: 10vh;
     width: 10vw;
@@ -35,15 +37,14 @@ body {
 }
 
 #container {
-    background-color: red;
-    height: 86.1vh;
+    height: 85vh;
 }
 
 #menuContainer {
     padding-left: 2%;
-    background-color: blue;
+    background-color: #353535;
     min-height: 3vh;
-    width: 100vw;
+    width: 98vw;
     display: grid;
     grid-template-columns: 1% 10% 20% 1% 1%;
     grid-column-gap: 1%;
@@ -57,7 +58,7 @@ body {
 #menuContainer>div>input {
     height: 60%;
     width: 25%;
-} 
+}
 
 #menuContainer>div>select {
     height: 88%;
@@ -81,22 +82,27 @@ body {
 
 #musicalNotes {
     background-color: pink;
+    position: absolute;
     width: 1.5%;
-    height: 96%;
+    height: 83.3%;
     text-align: right;
 }
 
 #timelineGrid {
-    background: green;
+    position: absolute;
+    left: 1.5%;
+    width: 98.5%;
+    height: 83.3%;
+    background: #383b3d;
 }
 
 
 @media screen and (max-width: 1070px) {
     #menuContainer {
         padding-left: 2%;
-        background-color: blue;
+        background-color: #353535;
         min-height: 3vh;
-        width: 100vw;
+        width: 98vw;
         display: grid;
         grid-template-columns: 3% 15% 40% 3% 3%;
         grid-column-gap: 1%;
