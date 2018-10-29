@@ -42,19 +42,41 @@ body {
 #menuContainer {
     padding-left: 2%;
     background-color: blue;
-    height: 3%;
+    min-height: 3vh;
+    width: 100vw;
     display: grid;
-    grid-template-columns: 1% 11.5% 11% 1% 1%;
+    grid-template-columns: 1% 10% 20% 1% 1%;
     grid-column-gap: 1%;
     padding-top: 0.2%;
 }
 
+#menuContainer>div>label {
+    font-size: 2vh;
+}
+
+#menuContainer>div>input {
+    height: 60%;
+    width: 25%;
+} 
+
+#menuContainer>div>select {
+    height: 88%;
+    width: 60%;
+}
+
 #playButton {
     color: red;
+    font-size: 2.4vh;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
 }
 
 #playButton:hover {
     color: white;
+    cursor: pointer;
 }
 
 #musicalNotes {
@@ -66,4 +88,23 @@ body {
 
 #timelineGrid {
     background: green;
+}
+
+
+@media screen and (max-width: 1070px) {
+    #menuContainer {
+        padding-left: 2%;
+        background-color: blue;
+        min-height: 3vh;
+        width: 100vw;
+        display: grid;
+        grid-template-columns: 3% 15% 40% 3% 3%;
+        grid-column-gap: 1%;
+        padding-top: 0.2%;
+    }
+
+    #menuContainer>div>input {
+        height: 60%;
+        width: 35%;
+    }
 }
