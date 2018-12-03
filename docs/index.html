@@ -1,1 +1,123 @@
 <!DOCTYPE html>
+<html lang="ro">
+<head>
+    <title>Documentatie Miorc - Midi Orchestra</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body prefix="schema: http://schema.org/">
+<article typeof="schema:ScholarlyArticle" resource="#">
+    <header>
+        <h1 property="schema:name"> Midi Orchestra (<span role="doc-subtitle" property="schema:alternateName">Miorc</span>)</h1>
+    </header>
+    <div role="contentinfo">
+        <dl>
+            <dt>Autori</dt>
+            <dd>
+                Paul Harabagiu, Adelin Pamint
+            </dd>
+        </dl>
+    </div>
+    <section typeof="sa:Subcategorii" id="cuprins">
+        <h2>Cuprins</h2>
+        <aside typeof="schema:WPSideBar">
+            <ul>
+                <li><a href="#descrierea-proiectului">1. Descrierea proiectului</a></li>
+                <li><a href="#idei-concepte-design">2. Idei/concepte importante privind designul general</a></li>
+                <li><a href="#interactiune-utilizator">3. Maniera de interacţiune cu utilizatorul</a></li>
+                <li><a href="#membrii-echipei">4. Membrii echipei</a></li>
+            </ul>
+        </aside>
+    </section>
+    <section typeof="sa:Results" id="descrierea-proiectului">
+        <h2>1. Descrierea proiectului</h2>
+        <blockquote>
+            <p>
+                Să se implementeze o aplicaţie Web care permite formarea unei orchestre on-line. "Cântăreţii" vor putea să-şi aleagă un instrument preferat dintr-o colecţie de minim N instrumente MIDI disponibile (e.g. N=3). Sistemul oferit va putea permite crearea unor "concerte" în care formaţiile vor fi compuse din interpreţi selectaţi de utilizator ori aleşi aleatoriu. Fiecărui instrument i se vor putea ajusta atribute precum sursa melodiei MIDI, volumul, numărul de secvenţe muzicale redate etc. 
+
+            </p>
+        </blockquote>
+    </section>
+    <section id="idei-concepte-design">
+        <h2>2. Idei/concepte importante privind designul general</h2>
+        <figure typeof="sa:Image1">
+            <img src="img/schita.jpg" style="width:720px;height:560px;display:inline;border: 2px solid black">
+            <figcaption>
+                Schița paginii
+            </figcaption>
+        </figure>
+        <blockquote>
+            <p>
+                În urma primelor discuții legate de proiect am ajuns la această idee de start pentru cum va arăta aplicația finală. Va avea un design minimalist, astfel încât un utilizator să nu fie nevoit să se axeze pe cum anume îi permite aplicația noastră să facă ceea ce și-a propus și să se concentreze mai mult pe partea de creeare de muzică. <br><br>
+                Un al doilea motiv pentru care am ales acest design este acela că permite adăugarea de noi funcționalități fără a face modificări asupra structurii de bază a paginii.
+            </p>
+        </blockquote>
+
+        <figure typeof="sa:Image2">
+            <img src="img/design.png" style="width:720px;height:450px;display:inline;border: 2px solid black">
+            <figcaption>
+                Prototipul paginii
+            </figcaption>
+        </figure>
+        <blockquote>
+            <p>
+                Acesta este design-ul care reprezintă baza aplicației, toate funcționalitățile pe care am decis că le vom implementa cu siguranță. În urma mai multor dezbateri am venit fiecare cu mai multe idei care ar îmbunătăți experiența de utilizare a aplicației, aceste idei le avem centralizate într-un board or Trello și ne vom ocupa de ele în funcție de timpul de care vom dispune pentru implementarea respectivelor idei.
+            </p>
+        </blockquote>
+
+        <figure typeof="sa:Image3">
+            <img src="img/wireframe.PNG" style="width:720px;height:560px;display:inline;border: 2px solid black">
+            <figcaption>
+                Wireframe-ul paginii
+            </figcaption>
+        </figure>
+    </section>
+    <section id="interactiune-utilizator">
+        <h2>3. Maniera de interacţiune cu utilizatorul</h2>
+        <blockquote>
+            <p>
+                Va exista un singur tip de utilizator. <br><br>
+                Orice utilizator care accesează site-ul web va avea posibilitatea de a își creea o melodie prin înlănțuirea de note muzicale, acesta având la dispoziție o gamă variată de instrumente. Pentru a facilita creearea de melodii, în partea stângă a ecranului vor fi prezente constant notele muzicale aferente fiecărei linii din sequencer-ul unde va fi reprezentată creația utilizatorului. <br><br>
+                În cazul în care un utilizator greșește și adaugă o notă muzicală în mod greșit, acesta va avea posibilitatea de a șterge nota respectivă.
+                O altă funcționalitate disponibilă utilizatorului va fi aceea de a seta un anumit număr de bătăi pe minut aferent melodiei create. Astfel, utilizatorul va avea posibilitatea de a crea o gamă variată de creații muzicale, acesta nefiind limitat la doar un anumit tempo.
+                Utilizatorul își va alege secvențial instrumentele pe care le va folosi în melodia sa. Aceste instrumente vor fi predefinite.
+                Utilizatorul va avea în orice moment posibilitatea de a porni/opri melodia în statusul ei curent pentru a își analiza munca curentă. Astfel, acesta va putea lua decizii în prealabil referioare la varianta finală a creației acestuia.
+            </p>
+        </blockquote>
+    </section>
+    <section id="cod-sursa">
+            <h2>4. Maniera de folosire a sistemului de management al codului-sursă ales</h2>
+            <blockquote>
+            <p>
+                Sistemul de management pentru codul sursă se află la adresa <a href="https://github.com/Daranii/DAWNC">aceasta</a>.
+            </p>
+            </blockquote>
+        </section>
+    <section typeof="sa:AuthorsList" id="membrii-echipei">
+        <h2>5. Membrii echipei</h2>
+        <ol>
+            <li typeof="sa:ContributorRole" property="schema:author">
+                <a href="https://github.com/Daranii" typeof="schema:Person">
+						<span property="schema:givenName">
+							Paul
+						</span>
+                    <span property="schema:familyName">
+							Harabagiu
+						</span>
+                </a>
+            </li>
+            <li typeof="sa:ContributorRole" property="schema:author">
+                <a href="https://github.com/AdelinPamant" typeof="schema:Person">
+						<span property="schema:givenName">
+							Adelin
+						</span>
+                    <span property="schema:familyName">
+							Pamint
+						</span>
+                </a>
+            </li>
+        </ol>
+    </section>
+</article>
+</body>
+</html>
