@@ -25,7 +25,11 @@
                 <li><a href="#descrierea-proiectului">1. Descrierea proiectului</a></li>
                 <li><a href="#idei-concepte-design">2. Idei/concepte importante privind designul general</a></li>
                 <li><a href="#interactiune-utilizator">3. Maniera de interacţiune cu utilizatorul</a></li>
-                <li><a href="#membrii-echipei">4. Membrii echipei</a></li>
+                <li><a href="#cod-sursa">4. Maniera de folosire a sistemului de management al codului-sursă ales</a></li>
+                <li><a href="#arhitectura-ansamblu">5. Arhitectura de ansamblu</a></li>
+                <li><a href="#tehnologii-util">6. Tehnologii Utilizate</a></li>
+                <li><a href="#modelare-date">7. Modelarea datelor proprii</a></li>
+                <li><a href="#membrii-echipei">8. Membrii echipei</a></li>
             </ul>
         </aside>
     </section>
@@ -33,7 +37,7 @@
         <h2>1. Descrierea proiectului</h2>
         <blockquote>
             <p>
-                Să se implementeze o aplicaţie Web care permite formarea unei orchestre on-line. "Cântăreţii" vor putea să-şi aleagă un instrument preferat dintr-o colecţie de minim N instrumente MIDI disponibile (e.g. N=3). Sistemul oferit va putea permite crearea unor "concerte" în care formaţiile vor fi compuse din interpreţi selectaţi de utilizator ori aleşi aleatoriu. Fiecărui instrument i se vor putea ajusta atribute precum sursa melodiei MIDI, volumul, numărul de secvenţe muzicale redate etc. 
+                Să se implementeze o aplicaţie Web care permite formarea unei orchestre on-line. "Cântăreţii" vor putea să-şi aleagă un instrument preferat dintr-o colecţie de minim N instrumente MIDI disponibile (e.g. N=3). Sistemul oferit va putea permite crearea unor "concerte" în care formaţiile vor fi compuse din interpreţi selectaţi de utilizator ori aleşi aleatoriu. Fiecărui instrument i se vor putea ajusta atribute precum sursa melodiei MIDI, volumul, numărul de secvenţe muzicale redate etc.
 
             </p>
         </blockquote>
@@ -86,15 +90,96 @@
         </blockquote>
     </section>
     <section id="cod-sursa">
-            <h2>4. Maniera de folosire a sistemului de management al codului-sursă ales</h2>
-            <blockquote>
+        <h2>4. Maniera de folosire a sistemului de management al codului-sursă ales</h2>
+        <blockquote>
             <p>
                 Sistemul de management pentru codul sursă se află la adresa <a href="https://github.com/Daranii/DAWNC">aceasta</a>.
             </p>
-            </blockquote>
-        </section>
+        </blockquote>
+    </section>
+    <section id="arhitectura-ansamblu">
+        <h2>5. Arhitectura de ansamblu</h2>
+        <figure typeof="sa:Image4">
+            <img src="img/Arhitectura1.jpg" style="width:720px;height:130px;display:inline;border: 2px solid black">
+            <figcaption>
+                Arhitectura siteului
+            </figcaption>
+        </figure>
+        <figure typeof="sa:Image5">
+            <img src="img/Arhitectura2.jpg" style="width:720px;height:350px;display:inline;border: 2px solid black">
+            <figcaption>
+                Arhitectura siteului
+            </figcaption>
+        </figure>
+        <figure typeof="sa:Image6">
+            <img src="img/UsecaseIncarcaCompozitie.jpg" style="width:720px;height:400px;display:inline;border: 2px solid black">
+            <figcaption>
+                Diagrama use case pentru incarcare
+            </figcaption>
+        </figure>
+        <figure typeof="sa:Image7">
+            <img src="img/UsecaseCreeazaCompozitie.jpg" style="width:720px;height:400px;display:inline;border: 2px solid black">
+            <figcaption>
+                Diagrama use case pentru creare
+            </figcaption>
+        </figure>
+        <figure typeof="sa:Image8">
+            <img src="img/UML_ToolbarToolBase.jpg" style="width:240px;height:440px;display:inline;border: 2px solid black">
+            <figcaption>
+                Diagrama de clasa pentru Toolbar
+            </figcaption>
+        </figure>
+        <figure typeof="sa:Image8">
+            <img src="img/UML_SequencerMusicalNote.jpg" style="width:270px;height:460px;display:inline;border: 2px solid black">
+            <figcaption>
+                Diagrama de clasa pentru Sequencer
+            </figcaption>
+        </figure>
+    </section>
+    <section id="#tehnologii-util">
+        <h2>6. Tehnologii utilizate</h2>
+        <blockquote>
+            <p>
+                <h3>Web Storage</h3>
+                Web Storage poate stoca date local in web browserul utilizatorului.<br>
+                Permite stocarea de date mult mai mari fara a afecta performanta siteului si este mai securizat.
+
+                <h3>Javascript:</h3>
+                Domină în applicațiile web deoarece este limbajul nativ în browser.<br>
+                Este usor de folosit împrună cu limbajul HTML.<br>
+                Permite modificarea dinamică DOM-ului, oferind astfel posibilitatea de a actualiza dinamic pagina.
+                Dispune de numeroase functionalitati scrise peste acesta(API-uri) care usureaza considerabil dezvoltarea aplicatiilor.
+
+                <h3>HTML5:</h3>
+                Este standardul pentru descrierea de continut si aparente din cadrul unei pagini web.<br>
+                Codul este curat si usor de inteles, abilitatea de a creea propriile tag-uri fiind foarte utila.<br>
+                Posibilitatea de offline browsing.<br>
+                Suport video si audio; suportul audio fiind un foarte mare plus pentru dezvoltarea aplicatiei noastre.
+
+                <h3>JavaScript-Powered Web App:</h3>
+                JavaScript permite mutarea in mare parte a logicii unei aplicatii web din server spre client, acesta preluam responsabilitatile de a procesa request-urile si de a randa raspunsul.<br>
+                Acest lucru duce la o mai mare flexibilitate a paginii.<br>
+                Astfel de aplicatii au o performanta ridicata, ofera diferite nivele de interactiune, dovada fiind numeroasele situatii in care sunt folosite, cum ar fi: e-shops, client portals, business web apps.
+            </p>
+        </blockquote>
+    </section>
+    <section id="modelare-date">
+        <h2>7. Modelarea datelor proprii</h2>
+        <figure typeof="sa:Image9">
+            <img src="img/MicrodataAutori.jpg" style="width:720px;height:240px;display:inline;border: 2px solid black">
+            <figcaption>
+                Microdate autori
+            </figcaption>
+        </figure>
+        <figure typeof="sa:Image10">
+            <img src="img/MicrodataSequencer.jpg" style="width:720px;height:120px;display:inline;border: 2px solid black">
+            <figcaption>
+                Microdate sequencer si MIDI files
+            </figcaption>
+        </figure>
+    </section>
     <section typeof="sa:AuthorsList" id="membrii-echipei">
-        <h2>5. Membrii echipei</h2>
+        <h2>8. Membrii echipei</h2>
         <ol>
             <li typeof="sa:ContributorRole" property="schema:author">
                 <a href="https://github.com/Daranii" typeof="schema:Person">
