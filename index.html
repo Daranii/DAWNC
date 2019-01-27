@@ -26,14 +26,14 @@
 
     <div id="container">
         <div id="menuContainer">
-            <div id="playButton" onclick="play()">&#x25B6;</div>
+            <div id="playButton" onclick="playToggle()">&#x25B6;</div>
             <div id="controlBPM">
                 <label for="setBPM">BPM</label>
                 <input id="setBPM" type="number" min="24" max="200" value="60">
             </div>
             <div id="selectInstrument">
                 <label>Instrument</label>
-                <select id="instrumentBox" onchange="setInstrument()">
+                <select id="instrumentBox">
                 </select>
             </div>
             <div id="writeMusic" onclick="addMode()">&#x270E;</div>
