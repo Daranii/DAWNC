@@ -20,7 +20,7 @@
     <div id="volumeControl">
         <label>Volume</label>
         <div>
-            <input type="range" min="1" max="100" value="50" id="volumeSlider">
+            <input type="range" min="0" max="10" value="2" id="volumeSlider">
         </div>
     </div>
 
@@ -29,29 +29,15 @@
             <div id="playButton" onclick="play()">&#x25B6;</div>
             <div id="controlBPM">
                 <label for="setBPM">BPM</label>
-                <input id="setBPM" type="number" min="1" max="200">
+                <input id="setBPM" type="number" min="24" max="200" value="60">
             </div>
             <div id="selectInstrument">
                 <label>Instrument</label>
                 <select id="instrumentBox" onchange="setInstrument()">
-                    <optgroup label="Piano">
-                        <option value="">Grand Piano</option>
-                        <option value="">Electric Piano</option>
-                        <option value="">Harpsichord</option>
-                        <option value="">Ragtime Piano</option>
-                    </optgroup>
-                    <optgroup label="Guitar">
-                        <option value="">Acoustic Guitar</option>
-                        <option value="">Electric Guitar</option>
-                        <option value="">Bass</option>
-                        <option value="">Slap Bass</option>
-                        <option value="">Jazz guitar</option>
-                        <option value="">Koto</option>
-                    </optgroup>
                 </select>
             </div>
-            <div id="writeMusic">&#x270E;</div>
-            <div id="deleteMusic">&#x232B;</div>
+            <div id="writeMusic" onclick="addMode()">&#x270E;</div>
+            <div id="deleteMusic" onclick="deleteMode()">&#x232B;</div>
         </div>
 
         <div id="musicalNotes">
