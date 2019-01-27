@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIDI Orchestra</title>
+    <!-- Personal script -->
+    <script type="text/javascript" src="script.js" defer></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
     <meta name="format-detection" content="telephone=no">
@@ -17,24 +19,24 @@
     </header>
     <div id="volumeControl">
         <label>Volume</label>
-        <div id="volumeSlider">
-            <input type="range" min="1" max="100" value="50">
+        <div>
+            <input type="range" min="1" max="100" value="50" id="volumeSlider">
         </div>
     </div>
 
     <div id="container">
         <div id="menuContainer">
-            <div id="playButton">&#x25B6;</div>
+            <div id="playButton" onclick="play()">&#x25B6;</div>
             <div id="controlBPM">
                 <label for="setBPM">BPM</label>
                 <input id="setBPM" type="number" min="1" max="200">
             </div>
             <div id="selectInstrument">
                 <label>Instrument</label>
-                <select>
+                <select id="instrumentBox" onchange="setInstrument()">
                     <optgroup label="Piano">
-                        <option value="">Electric Piano</option>
                         <option value="">Grand Piano</option>
+                        <option value="">Electric Piano</option>
                         <option value="">Harpsichord</option>
                         <option value="">Ragtime Piano</option>
                     </optgroup>
@@ -52,61 +54,13 @@
             <div id="deleteMusic">&#x232B;</div>
         </div>
 
-        <div id="musicalNotes">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-        </div>
+        <div id="sequencer">
+            <div id="musicalNotes">
+            </div>
 
-        <div id="timelineGrid">
+            <div id="timelineGrid">
 
+            </div>
         </div>
     </div>
 </body>

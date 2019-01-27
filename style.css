@@ -96,6 +96,10 @@ body {
     text-align: right;
 }
 
+#sequencer {
+    overflow-y: auto;
+}
+
 #timelineGrid {
     position: absolute;
     left: 1.5%;
@@ -105,9 +109,19 @@ body {
 }
 
 #musicalNotes>div {
+    color: white;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
     height: 2%;
     width: 100%;
 }
+/* 
+#musicalNotes>div:active {
+    background-color: blue;
+} */
 
 #musicalNotes>div:nth-child(odd) {
     background-color: #666666;
