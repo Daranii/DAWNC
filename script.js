@@ -11,10 +11,13 @@ var keys = [
     ];
 var audioType = "-mp3";
 var instrumentList = [];
-var currentInstrument = [];
+var currentInstrumentName;
+var currentInstrumentNotes = [];
 var audio;
-var volume;
+var volumeValue = 2;
 var sequencerMode = 0;
+var playing = 0;
+var timeBarInterval;
 
 document.addEventListener("drag", function (event) {
     
@@ -23,9 +26,13 @@ document.addEventListener("drag", function (event) {
 document.addEventListener("dragenter", function(event) {
     if (event.target.className == "note") {
         console.log(12);
-        playNote(event.target);
+        playNote(event.target.textContent);
     }
 }, false);
+
+window.onbeforeunload = function() {
+    if (sequencerMode == 1) return "";
+};
 
 
 window.onload = function() {
@@ -40,18 +47,13 @@ window.onload = function() {
         if (!audio.createGain) audio.createGain = audio.createGainNode;
         if (!audio.createDelay) audio.createDelay = audio.createDelayNode;
         if (!audio.createScriptProcessor) audio.createScriptProcessor = audio.createJavaScriptNode;
-        volume = audio.createGain();
-        volume.gain.minValue = 0;
-        volume.gain.maxValue = 100;
-        volume.gain.value = 2;
-        volume.connect(audio.destination);
     }
     catch (e) {
         console.log("Eroare la creare audio");
     }
     volumeControl = document.getElementById("volumeSlider");
     volumeControl.addEventListener("input", function() {
-        volume.gain.value = this.value;
+        volumeValue = this.value;
     }, false);
     setInstrument("acoustic_grand_piano");
     createNotes();
@@ -81,7 +83,7 @@ function createHtmlNotes() {
     for (var i = 0; i < keys.length; i++) {
         divElement = document.createElement("div");
         // divElement.addEventListener("dragenter", function(event) {
-        //     playNote(event.target);
+        //     playNote(event.target.textContet);
         // });
         container.appendChild(divElement);
     }
@@ -94,12 +96,13 @@ function createNotes() {
         noteLocation[i].textContent = keys[i];
         noteLocation[i].className = "note";
         noteLocation[i].addEventListener("click", function (event) {
-            playNote(event.target);
+            playNote(event.target.textContent);
         });
     }
 }
 
 function setInstrument(instrumentName) {
+    currentInstrumentName = instrumentName;
     var xmlhttp = new XMLHttpRequest();
     var tempInstrument;
     xmlhttp.onload = function() {
@@ -110,8 +113,7 @@ function setInstrument(instrumentName) {
             for (const note in tempInstrument) {
                 audio.decodeAudioData(base64ToArrayBuffer(tempInstrument[note]), 
                 function(buffer) {
-                    temp = new Object(buffer);
-                    currentInstrument[note] = temp;
+                    currentInstrumentNotes[note] = buffer;
                 });
             }
         }
@@ -122,19 +124,43 @@ function setInstrument(instrumentName) {
 
 function playToggle() {
     button = document.getElementById("playButton");
-    bpm = document.getElementById("setBPM").value;
-    
+    if (playing == 0) {
+        bpm = document.getElementById("setBPM").value;
+        // sequencer = document.getElementById("sequencer");
+        // animationObject = document.createElement("div");
+        // animationObject.id = "timeBar";
+        // animationObject.style.backgroundColor = "#d67405";
+        // animationObject.style.position = "absolute";
+        // animationObject.style.width = "2px";
+        // animationObject.style.left = "29px";
+        // animationObject.style.height = "100%";
+        // sequencer.appendChild(animationObject);
+        // var position = 29;
+        // timeBarInterval = setInterval(() => {
+        //     animationObject.style.left = position + "px";
+        //     position += 2;
+        // }, 1);
+        playing = 1;
+    }
+    else {
+        // clearInterval(timeBarInterval);
+        playing = 0;
+    }
 }
 
-function playNote(target) {
+function playNote(content, time = 1) {
+    var volume = audio.createGain();
+    volume.gain.value = volumeValue;
+    volume.connect(audio.destination);
+    volume.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + time);
     var source = audio.createBufferSource();
-    source.buffer = currentInstrument[target.textContent];
+    source.buffer = currentInstrumentNotes[content];
     source.connect(volume);
-    source.start(0);
+    source.start(audio.currentTime, 0);
 }
 
 function addNote(noteName, sequencerTime) {
-    // audio[0].src = currentInstrument[noteName];
+    // audio[0].src = currentInstrumentNotes[noteName];
 }
 
 function removeNote(noteName, sequencerTime) {
