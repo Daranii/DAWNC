@@ -1,4 +1,5 @@
-var keys = ["A0", "Bb0", "B0", "C1", "Db1", "D1", "Eb1", "E1", "F1",
+var keys = [
+    "A0", "Bb0", "B0", "C1", "Db1", "D1", "Eb1", "E1", "F1",
     "Gb1", "G1", "Ab1", "A1", "Bb1", "B1", "C2", "Db2", "D2", "Eb2",
     "E2", "F2", "Gb2", "G2", "Ab2", "A2", "Bb2", "B2", "C3", "Db3", "D3",
     "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3", "B3", "C4", "Db4",
@@ -6,7 +7,8 @@ var keys = ["A0", "Bb0", "B0", "C1", "Db1", "D1", "Eb1", "E1", "F1",
     "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5",
     "C6", "Db6", "D6", "Eb6", "E6", "F6", "Gb6", "G6", "Ab6", "A6", "Bb6",
     "B6", "C7", "Db7", "D7", "Eb7", "E7", "F7", "Gb7", "G7", "Ab7", "A7",
-    "Bb7", "B7", "C8"];
+    "Bb7", "B7", "C8"
+    ];
 var audioType = "-mp3";
 var instrumentList = [];
 var currentInstrument = [];
@@ -25,13 +27,19 @@ document.addEventListener("dragenter", function(event) {
     }
 }, false);
 
+
 window.onload = function() {
+    createHtmlNotes();
+    var selectBox = document.getElementById("instrumentBox");
+    selectBox.addEventListener("change", function(event) {
+        setInstrument(event.target.options[event.target.selectedIndex].id);
+    });
     try {
         window.AudioContext = window.AudioContext||window.webkitAudioContext;
         audio = new AudioContext();
-        // if (!audio.createGain) audio.createGain = audio.createGainNode;
-        // if (!audio.createDelay) audio.createDelay = audio.createDelayNode;
-        // if (!audio.createScriptProcessor) audio.createScriptProcessor = audio.createJavaScriptNode;
+        if (!audio.createGain) audio.createGain = audio.createGainNode;
+        if (!audio.createDelay) audio.createDelay = audio.createDelayNode;
+        if (!audio.createScriptProcessor) audio.createScriptProcessor = audio.createJavaScriptNode;
         volume = audio.createGain();
         volume.gain.minValue = 0;
         volume.gain.maxValue = 100;
@@ -72,6 +80,9 @@ function createHtmlNotes() {
 
     for (var i = 0; i < keys.length; i++) {
         divElement = document.createElement("div");
+        // divElement.addEventListener("dragenter", function(event) {
+        //     playNote(event.target);
+        // });
         container.appendChild(divElement);
     }
 }
@@ -108,7 +119,8 @@ function setInstrument(instrumentName) {
     xmlhttp.send();
 }
 
-function play() {
+function playToggle() {
+    button = document.getElementById("playButton");
     bpm = document.getElementById("setBPM").value;
     
 }
@@ -140,6 +152,7 @@ function createOptions() {
                 option.id = tempInstrumentList[data];
                 selectBox.add(option);
             }
+            selectBox.selectedIndex = 2;
         }
     };
     xmlhttp.open("GET", "data/instrumentsDictionary.json", true);
