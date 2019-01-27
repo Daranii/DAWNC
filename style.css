@@ -51,6 +51,10 @@ body {
     color: white;
 }
 
+#writeMusic {
+    color:red;
+}
+
 #menuContainer>div>label {
     font-size: 2vh;
 }

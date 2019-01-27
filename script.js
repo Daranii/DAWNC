@@ -8,9 +8,11 @@ var keys = ["A0", "Bb0", "B0", "C1", "Db1", "D1", "Eb1", "E1", "F1",
     "B6", "C7", "Db7", "D7", "Eb7", "E7", "F7", "Gb7", "G7", "Ab7", "A7",
     "Bb7", "B7", "C8"];
 var audioType = "-mp3";
+var instrumentList = [];
 var currentInstrument = [];
 var audio;
 var volume;
+var sequencerMode = 0;
 
 document.addEventListener("drag", function (event) {
     
@@ -33,7 +35,8 @@ window.onload = function() {
         volume = audio.createGain();
         volume.gain.minValue = 0;
         volume.gain.maxValue = 100;
-        volume.gain.defaultValue = 50;
+        volume.gain.value = 2;
+        volume.connect(audio.destination);
     }
     catch (e) {
         console.log("Eroare la creare audio");
@@ -45,7 +48,7 @@ window.onload = function() {
     setInstrument("acoustic_grand_piano");
     createNotes();
     // createSequencer();
-    // createOptions();
+    createOptions();
 
 };
 
@@ -85,91 +88,19 @@ function createNotes() {
     }
 }
 
-// function setInstrument(instrumentName) {
-//     var xmlhttp = new XMLHttpRequest();
-//     var tempInstrument;
-//     // deci noi avem un for care trece prin niste date. si noi vrem a folosim datele din for inauntrul functiei audio.decodeAudioData care returneaza n promise si function(buffer) e aplicat ca un fel de then pe el
-//     // xmlhttp.onload = function() {
-//     //     if (this.readyState == 4 && this.status == 200) {
-//     //         tempInstrument = JSON.parse(this.responseText);
-//     //         keys = [];
-//     //         for (var note in tempInstrument) keys.push(note);
-//     //         var tempKeys = keys;
-//     //         var i = 0;
-//     //         return tempKeys.reduce((promise, item) => {
-//     //             return promise.then((result) => {
-//     //                 return audio.decodeAudioData(base64ToArrayBuffer(item), 
-//     //                 function(buffer) {
-//     //                     temp = new Object(buffer);
-//     //                     currentInstrument[note] = temp;
-//     //                     console.log(currentInstrument[1]);
-                        
-//     //                     console.log(currentInstrument[note]);
-//     //                     var source = audio.createBufferSource();
-//     //                     source.buffer = currentInstrument[note];
-//     //                     source.connect(audio.destination);
-//     //                     source.start();
-//     //                 }).then(result);
-//     //             }, Promise.resolve());    
-//     //         });
-//     //     }
-//     // };
-
-//     xmlhttp.onload = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//             tempInstrument = JSON.parse(this.responseText);
-//             keys = [];
-//             for (var note in tempInstrument) keys.push(note);
-//             var tempKeys = keys;
-//             // var i = 0;
-
-//             // console.log(base64ToArrayBuffer(tempInstrument[tempKeys[i]]));
-//             tempKeys.reduce((promise, item) => {
-//                 return promise.then((result) => {
-//                     audio.decodeAudioData(base64ToArrayBuffer(tempInstrument[note]), 
-//                     function(buffer) {
-//                         temp = new Object(buffer);
-//                         console.log(note);
-//                         currentInstrument[note] = temp;
-//                         console.log(currentInstrument);
-
-//                         console.log(currentInstrument[note]);
-//                         // var source = audio.createBufferSource();
-//                         // source.buffer = currentInstrument[note];
-//                         // source.connect(audio.destination);
-//                         // source.start();
-//                     });
-//                 });    
-//             }, Promise.resolve());
-//         }
-//     };
-//     xmlhttp.open("GET", "data/" + instrumentName + audioType + ".json", true);
-//     xmlhttp.send();
-// }
-
-
 function setInstrument(instrumentName) {
     var xmlhttp = new XMLHttpRequest();
     var tempInstrument;
-
-    xmlhttp.onload = function () {
-
-        createHtmlNotes();
-
-        if (this.readyState === 4 && this.status === 200) {
+    xmlhttp.onload = function() {
+        if (this.readyState == 4 && this.status == 200) {
             tempInstrument = JSON.parse(this.responseText);
             keys = [];
-            
             for (const note in tempInstrument) {
-                audio.decodeAudioData(base64ToArrayBuffer(tempInstrument[note]),
-                    function (buffer) {
-                        let temp = new Object(buffer);
-                        currentInstrument[note] = temp;
-                        // var source = audio.createBufferSource();
-                        // source.buffer = currentInstrument[note];
-                        // source.connect(audio.destination);
-                        // source.start();
-                    });
+                audio.decodeAudioData(base64ToArrayBuffer(tempInstrument[note]), 
+                function(buffer) {
+                    temp = new Object(buffer);
+                    currentInstrument[note] = temp;
+                });
             }
         }
     };
@@ -177,15 +108,15 @@ function setInstrument(instrumentName) {
     xmlhttp.send();
 }
 
-
 function play() {
-
+    bpm = document.getElementById("setBPM").value;
+    
 }
 
 function playNote(target) {
     var source = audio.createBufferSource();
     source.buffer = currentInstrument[target.textContent];
-    source.connect(audio.destination);
+    source.connect(volume);
     source.start(0);
 }
 
@@ -193,23 +124,36 @@ function addNote(noteName, sequencerTime) {
     // audio[0].src = currentInstrument[noteName];
 }
 
+function removeNote(noteName, sequencerTime) {
+    
+}
+
 function createOptions() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            currentInstrument = JSON.parse(this.responseText);
-            for (var i = 0; i < currentInstrument.length; i++) {
-                for (var data in currentInstrument) {
-                    var selectBox = document.getElementById("instrumentBox");
-                    var option = document.createElement("option");
-                    option.text = "Kiwi"; // regex
-                    option.value = data[i];
-                    selectBox.add(option);
-                }
-                
+            tempInstrumentList = JSON.parse(this.responseText);
+            var selectBox = document.getElementById("instrumentBox");
+            for (var data in tempInstrumentList) {
+                var option = document.createElement("option");
+                option.text = data;
+                option.id = tempInstrumentList[data];
+                selectBox.add(option);
             }
         }
     };
-    xmlhttp.open("GET", "data/instruments.json", true);
+    xmlhttp.open("GET", "data/instrumentsDictionary.json", true);
     xmlhttp.send();
+}
+
+function addMode() {
+    document.getElementById("deleteMusic").style.color = "#ffffff";
+    document.getElementById("writeMusic").style.color = "#ff0000";
+    sequencerMode = 0;
+}
+
+function deleteMode() {
+    document.getElementById("writeMusic").style.color = "#ffffff";
+    document.getElementById("deleteMusic").style.color = "#ff0000";
+    sequencerMode = 1;
 }
