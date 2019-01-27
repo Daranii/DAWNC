@@ -92,24 +92,30 @@ body {
     cursor: pointer;
 }
 
-#musicalNotes {
-    background-color: pink;
-    position: absolute;
-    width: 1.5%;
-    height: 83.3%;
-    text-align: right;
+#sequencer {
+    width: 100%;
+    height: 83vh;
+    overflow: auto;
+    display: inline-block;
+    background: #383b3d; 
 }
 
-#sequencer {
-    overflow-y: auto;
+#musicalNotes {
+    background-color: pink;
+    text-align: right;
+    background: red; 
+    width: 1.5%; 
+    float: left; 
+    position: relative;
 }
 
 #timelineGrid {
-    position: absolute;
-    left: 1.5%;
-    width: 98.5%;
+    /* left: 1.5%; */
     height: 83.3%;
-    background: #383b3d;
+    /* width: 98.5%;  */
+    float: left; 
+    position: relative;
+    overflow-x: scroll;
 }
 
 #musicalNotes>div {
