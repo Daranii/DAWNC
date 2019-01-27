@@ -1,5 +1,7 @@
+import json
 import re
 from urllib import request
+
 
 """ In the following try except code all the names of the ogg/mp3
     file names are being collected with their specific extension """
@@ -14,8 +16,25 @@ try:
 except Exception as e:
     print(e)
 
+
 """ The path to which the files will be saved is a local folder in the project """
 path = r"..\data"
+
+
+instrumentValues = [el.rsplit('-', 1)[0] for el in instruments]
+
+instrumentKeys = [el.rsplit('-', 1)[0] for el in instruments]
+instrumentKeys = [el.replace('_', ' ') for el in instrumentKeys]
+instrumentKeys = [el.title() for el in instrumentKeys]
+
+instrumentsDict = dict()
+
+for i in range(0, len(instruments)):
+    instrumentsDict[instrumentKeys[i]] = instrumentValues[i]
+
+data = json.dumps(instrumentsDict)
+open(path + '\\' + "instrumentsDictionary.json", "wt").write(data)
+
 
 """ In the following code is accesed the download url for each file,
     the content is saved in a variable, it is being processed so it has

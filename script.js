@@ -66,6 +66,16 @@ function createSequencer() {
     sequencerLocation = document.getElementById("timelineGrid");
 }
 
+function createHtmlNotes() {
+    var container = document.getElementById("musicalNotes");
+    var divElement;
+
+    for (var i = 0; i < keys.length; i++) {
+        divElement = document.createElement("div");
+        container.appendChild(divElement);
+    }
+}
+
 function createNotes() {
     var noteLocation = document.getElementById("musicalNotes").getElementsByTagName("div");
     

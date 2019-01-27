@@ -1,0 +1,2 @@
+The purpose of the getNotesInJson.py script is to get the data of each note from "https://github.com/gleitz/midi-js-soundfonts/tree/gh-pages/FluidR3_GM" in Json format.
+The note names will represent the keys, and their base64 value of each note will be placed at each note. 

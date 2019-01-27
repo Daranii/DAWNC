@@ -100,6 +100,10 @@ body {
     text-align: right;
 }
 
+#sequencer {
+    overflow-y: auto;
+}
+
 #timelineGrid {
     position: absolute;
     left: 1.5%;
