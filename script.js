@@ -90,7 +90,7 @@ function createHtmlNotes() {
 function createNotes() {
     var noteLocation = document.getElementById("musicalNotes").getElementsByTagName("div");
     
-    for (var i = 0; i < 40; i++){
+    for (var i = 0; i < 88; i++){
         noteLocation[i].textContent = keys[i];
         noteLocation[i].className = "note";
         noteLocation[i].addEventListener("click", function (event) {
@@ -103,6 +103,7 @@ function setInstrument(instrumentName) {
     var xmlhttp = new XMLHttpRequest();
     var tempInstrument;
     xmlhttp.onload = function() {
+
         if (this.readyState == 4 && this.status == 200) {
             tempInstrument = JSON.parse(this.responseText);
             keys = [];
