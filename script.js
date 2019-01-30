@@ -37,6 +37,7 @@ window.onbeforeunload = function() {
 
 window.onload = function() {
     createHtmlNotes();
+    fillSequencer();
     var selectBox = document.getElementById("instrumentBox");
     selectBox.addEventListener("change", function(event) {
         setInstrument(event.target.options[event.target.selectedIndex].id);
@@ -87,6 +88,74 @@ function createHtmlNotes() {
         // });
         container.appendChild(divElement);
     }
+}
+
+function fillSequencer() {
+    var container = document.getElementById("timelineGrid");
+
+    var table = document.createElement("TABLE");
+    table.style.borderSpacing = "0px";
+    table.style.boxSizing = "border-box";
+
+    for (var line = 0; line < 88; line++) {
+        var row = table.insertRow(0);
+        row.style.height = "18px";
+
+        for (var column = 0; column < 16 * 5; column++) {
+            var cell = row.insertCell(column);
+            cell.className = `${column}`;
+            if ((column + 1) % 16 == 0) {
+                cell.style.borderRight = "3px solid #132542";
+            }
+            else if ((column + 1) % 4 == 0 && (column + 1) % 16 != 0) {
+                cell.style.borderRight = "2px solid #132542";
+            }
+            else {
+                cell.style.borderRight = "0.5px solid #313233";
+            }
+            cell.style.minWidth = "30px";
+            cell.style.boxSizing = "border-box";
+            
+            cell.style.borderBottom = "0.5px solid #313233";
+            cell.style.userSelect = "none";
+            cell.style.webkitUserSelect = "none";
+            cell.style.msUserSelect = "none";
+        }
+    }
+
+    container.appendChild(table);
+    
+    // for (var line = 0; line < 88; line++) {
+    //     for (var column = 0; column < 88 * 3; column++) {
+    //         divElement = document.createElement("div");
+    //         divElement.setAttribute("class", column);
+            
+    //         divElement.style.color = "#383b3d";
+    //         divElement.style.userSelect = "none";
+    //         divElement.style.webkitUserSelect = "none";
+    //         divElement.style.msUserSelect = "none";
+    //         divElement.style.height = "2.7%";
+    //         divElement.style.width = "1%";
+    //         divElement.style.cssFloat = "left";
+    //         divElement.style.maxHeight = "18px";
+    //         // a = Math.floor(Math.random() * 256);
+    //         // b = Math.floor(Math.random() * 256);
+    //         // c = Math.floor(Math.random() * 256);
+    //         // divElement.style.backgroundColor = `rgb(${a}, ${b}, ${c})`;
+    //         divElement.style.boxSizing = "border-box";
+    //         divElement.style.borderBottom = "1px solid black";
+    //         divElement.style.borderRight = "1px solid black";
+    //         color: white;
+    // user-select: none;
+    // -moz-user-select: none;
+    // -khtml-user-select: none;
+    // -webkit-user-select: none;
+    // -o-user-select: none;
+    // height: 2%;
+    // width: 100%;
+    //         container.appendChild(divElement);
+    //     }
+    // }
 }
 
 function createNotes() {
