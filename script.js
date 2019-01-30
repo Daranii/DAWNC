@@ -11,10 +11,16 @@ var keys = [
     ];
 var audioType = "-mp3";
 var instrumentList = [];
-var currentInstrument = [];
+var currentInstrumentName;
+var currentInstrumentNotes = [];
 var audio;
-var volume;
+var volumeValue = 2;
 var sequencerMode = 0;
+var playing = 0;
+var playingID = [];
+var timeBarInterval;
+var timeline = [];
+var savedNotes = [];
 
 document.addEventListener("drag", function (event) {
     
@@ -23,15 +29,21 @@ document.addEventListener("drag", function (event) {
 document.addEventListener("dragenter", function(event) {
     if (event.target.className == "note") {
         console.log(12);
-        playNote(event.target);
+        playNote(event.target.textContent);
     }
 }, false);
 
+window.onbeforeunload = function() {
+    if (sequencerMode == 1) return "";
+};
+
 
 window.onload = function() {
+    timeline = new Array();
+    savedNotes = new Array();
     createHtmlNotes();
     fillSequencer();
-    var selectBox = document.getElementById("instrumentBox");
+    let selectBox = document.getElementById("instrumentBox");
     selectBox.addEventListener("change", function(event) {
         setInstrument(event.target.options[event.target.selectedIndex].id);
     });
@@ -41,18 +53,13 @@ window.onload = function() {
         if (!audio.createGain) audio.createGain = audio.createGainNode;
         if (!audio.createDelay) audio.createDelay = audio.createDelayNode;
         if (!audio.createScriptProcessor) audio.createScriptProcessor = audio.createJavaScriptNode;
-        volume = audio.createGain();
-        volume.gain.minValue = 0;
-        volume.gain.maxValue = 100;
-        volume.gain.value = 2;
-        volume.connect(audio.destination);
     }
     catch (e) {
         console.log("Eroare la creare audio");
     }
     volumeControl = document.getElementById("volumeSlider");
     volumeControl.addEventListener("input", function() {
-        volume.gain.value = this.value;
+        volumeValue = this.value;
     }, false);
     setInstrument("acoustic_grand_piano");
     createNotes();
@@ -62,10 +69,10 @@ window.onload = function() {
 };
 
 function base64ToArrayBuffer(base64) { // Transform base64 to ArrayBuffer for Web Audio
-    var binaryString =  window.atob(base64);
-    var len = binaryString.length;
-    var bytes = new Uint8Array( len );
-    for (var i = 0; i < len; i++) {
+    let binaryString =  window.atob(base64);
+    let len = binaryString.length;
+    let bytes = new Uint8Array( len );
+    for (let i = 0; i < len; i++) {
         bytes[i] = binaryString.charCodeAt(i);
     }
     return bytes.buffer;
@@ -76,31 +83,31 @@ function createSequencer() {
 }
 
 function createHtmlNotes() {
-    var container = document.getElementById("musicalNotes");
-    var divElement;
+    let container = document.getElementById("musicalNotes");
+    let divElement;
 
-    for (var i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         divElement = document.createElement("div");
         // divElement.addEventListener("dragenter", function(event) {
-        //     playNote(event.target);
+        //     playNote(event.target.textContet);
         // });
         container.appendChild(divElement);
     }
 }
 
 function fillSequencer() {
-    var container = document.getElementById("timelineGrid");
+    let container = document.getElementById("timelineGrid");
 
-    var table = document.createElement("TABLE");
+    let table = document.createElement("TABLE");
     table.style.borderSpacing = "0px";
     table.style.boxSizing = "border-box";
 
-    for (var line = 0; line < 88; line++) {
-        var row = table.insertRow(0);
+    for (let line = 87; line >= 0; line--) {
+        let row = table.insertRow(0);
         row.style.height = "18px";
 
-        for (var column = 0; column < 16 * 5; column++) {
-            var cell = row.insertCell(column);
+        for (let column = 0; column < 16 * 5; column++) {
+            let cell = row.insertCell(column);
             cell.className = `${column}`;
             if ((column + 1) % 16 == 0) {
                 cell.style.borderRight = "3px solid #132542";
@@ -118,13 +125,24 @@ function fillSequencer() {
             cell.style.userSelect = "none";
             cell.style.webkitUserSelect = "none";
             cell.style.msUserSelect = "none";
+            cell.id = keys[line];
+            cell.addEventListener("mouseup", function(event) {
+                if (sequencerMode == 0 && event.target.textContent == "") {
+                    event.target.textContent = event.target.id;
+                    addNote(event.target.id, event.target.className);
+                }
+                else if (sequencerMode == 1 && event.target.textContent != "") {
+                    event.target.textContent = "";
+                    removeNote(event.target.id, event.target.className);
+                }
+            });
         }
     }
 
     container.appendChild(table);
     
-    // for (var line = 0; line < 88; line++) {
-    //     for (var column = 0; column < 88 * 3; column++) {
+    // for (let line = 0; line < 88; line++) {
+    //     for (let column = 0; column < 88 * 3; column++) {
     //         divElement = document.createElement("div");
     //         divElement.setAttribute("class", column);
             
@@ -157,32 +175,32 @@ function fillSequencer() {
 }
 
 function createNotes() {
-    var noteLocation = document.getElementById("musicalNotes").getElementsByTagName("div");
+    let noteLocation = document.getElementById("musicalNotes").getElementsByTagName("div");
     
-    for (var i = 0; i < 88; i++){
+    for (let i = 0; i < 88; i++){
         noteLocation[i].textContent = keys[i];
         noteLocation[i].className = "note";
         noteLocation[i].addEventListener("click", function (event) {
-            playNote(event.target);
+            playNote(event.target.textContent);
         });
     }
 }
 
 function setInstrument(instrumentName) {
-    var xmlhttp = new XMLHttpRequest();
-    var tempInstrument;
+    currentInstrumentName = instrumentName;
+    let xmlhttp = new XMLHttpRequest();
+    let tempInstrument;
     xmlhttp.onload = function() {
-
         if (this.readyState == 4 && this.status == 200) {
             tempInstrument = JSON.parse(this.responseText);
             keys = [];
             for (const note in tempInstrument) {
                 audio.decodeAudioData(base64ToArrayBuffer(tempInstrument[note]), 
                 function(buffer) {
-                    temp = new Object(buffer);
-                    currentInstrument[note] = temp;
+                    currentInstrumentNotes[note] = buffer;
                 });
             }
+            // set random color for background
         }
     };
     xmlhttp.open("GET", "data/" + instrumentName + audioType + ".json", true);
@@ -191,33 +209,111 @@ function setInstrument(instrumentName) {
 
 function playToggle() {
     button = document.getElementById("playButton");
-    bpm = document.getElementById("setBPM").value;
-    
+    if (playing == 0) {
+        // button.textContent = "";
+        console.log("assfdaasdfd");
+        bpm = document.getElementById("setBPM").value;
+        bpm = bpmToMS(bpm);
+        // get max de locatie?
+        for (const time in timeline) {
+            console.log(time);
+            // playingID.push(setTimeout(() => {
+            //     console.log("In Timeout:" + time);
+                
+                for (const note in timeline[time]) {
+                    // console.log(timeline[time][note]);
+                    // console.log(savedNotes[timeline[time][note]]);
+                    console.log("BPM: " + bpm);
+                    
+                    console.log("Calculation: " + time * bpm / 1000);
+                    
+                    playNoteBuffer(savedNotes[timeline[time][note]], time * bpm / 4000);
+                }
+            // }, bpm * time));
+        }
+        
+        // sequencer = document.getElementById("sequencer");
+        // animationObject = document.createElement("div");
+        // animationObject.id = "timeBar";
+        // animationObject.style.backgroundColor = "#d67405";
+        // animationObject.style.position = "absolute";
+        // animationObject.style.width = "2px";
+        // animationObject.style.left = "29px";
+        // animationObject.style.height = "100%";
+        // sequencer.appendChild(animationObject);
+        // let position = 29;
+        // timeBarInterval = setInterval(() => {
+        //     animationObject.style.left = position + "px";
+        //     position += 2;
+        // }, 1);
+        playing = 1;
+    }
+    else {
+        // button.textContent = "";
+        console.log("asd");
+        
+        // clearInterval(timeBarInterval);
+        playing = 0;
+    }
 }
 
-function playNote(target) {
+function bpmToMS(bpmValue, tempo) {
+    // if tempo 4, 8, ...
+    return 60000 / bpmValue;
+}
+
+function playNoteBuffer(noteBuffer, timeStart = 0, timeRampTo = 2) {
+    console.log("3424242grefwefw");
+    
+    var volume = audio.createGain();
+    volume.gain.value = volumeValue;
+    volume.connect(audio.destination);
+    // volume.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + timeRampTo);
     var source = audio.createBufferSource();
-    source.buffer = currentInstrument[target.textContent];
+    source.buffer = noteBuffer;
     source.connect(volume);
-    source.start(0);
+    source.start(audio.currentTime + timeStart, 0);
+}
+
+function playNote(note, timeStart = 0, timeRampTo = 1) {
+    let volume = audio.createGain();
+    volume.gain.value = volumeValue;
+    volume.connect(audio.destination);
+    volume.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + timeRampTo);
+    let source = audio.createBufferSource();
+    source.buffer = currentInstrumentNotes[note];
+    source.connect(volume);
+    source.start(audio.currentTime, 0);
 }
 
 function addNote(noteName, sequencerTime) {
-    // audio[0].src = currentInstrument[noteName];
+    if (Array.isArray(timeline[sequencerTime])) {
+        timeline[sequencerTime].push(noteName + " " + currentInstrumentName);
+        if (savedNotes[noteName + " " + currentInstrumentName] === undefined)
+            savedNotes[noteName + " " + currentInstrumentName] = currentInstrumentNotes[noteName];    
+    }
+    else {
+        timeline[sequencerTime] = new Array(noteName + " " + currentInstrumentName);
+        if (savedNotes[noteName + " " + currentInstrumentName] === undefined)
+            savedNotes[noteName + " " + currentInstrumentName] = currentInstrumentNotes[noteName];    
+    }
+    
+    playNote(noteName);
 }
 
 function removeNote(noteName, sequencerTime) {
-    
+    let index = timeline[sequencerTime].indexOf(noteName + " " + currentInstrumentName);
+    timeline[sequencerTime].splice(index, 1);
 }
 
 function createOptions() {
-    var xmlhttp = new XMLHttpRequest();
+    let xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             tempInstrumentList = JSON.parse(this.responseText);
-            var selectBox = document.getElementById("instrumentBox");
-            for (var data in tempInstrumentList) {
-                var option = document.createElement("option");
+            let selectBox = document.getElementById("instrumentBox");
+            for (let data in tempInstrumentList) {
+                let option = document.createElement("option");
                 option.text = data;
                 option.id = tempInstrumentList[data];
                 selectBox.add(option);
@@ -240,3 +336,7 @@ function deleteMode() {
     document.getElementById("deleteMusic").style.color = "#ff0000";
     sequencerMode = 1;
 }
+
+
+
+// for using local files: https://stackoverflow.com/questions/13110007/web-audio-api-how-to-play-and-stop-audio
