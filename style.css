@@ -131,6 +131,28 @@ body {
     height: 2%;
     width: 100%;
 }
+
+table {
+    border-spacing: 0px;
+    box-sizing: border-box;
+}
+
+tr {
+    height: 18px;
+}
+
+td {
+    min-width: 30px;
+    box-sizing: border-box;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    border-bottom: 0.5px solid #313233;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
 /* 
 #musicalNotes>div:active {
     background-color: blue;

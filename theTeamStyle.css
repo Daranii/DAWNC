@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker|Source+Code+Pro');
+
+
+body {
+    background-image: url("data/teamPageBackground.jpg");
+}
+
+#container {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 100px;
+}
+
+#title {
+    font-family: 'Source Code Pro', monospace;
+    margin-bottom: 50px;
+    font-size: 70px;
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: #F8F9FB;
+}
+
+#team {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 85px;
+    line-height: 100px;
+    color: white;
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: black;
+}
