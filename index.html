@@ -8,6 +8,7 @@
     <script type="text/javascript" src="script.js" defer></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="format-detection" content="telephone=no">
     <meta name="subject" content="MIDI Orchestra">
     <meta name="author" content="Harabagiu Paul">
@@ -23,11 +24,16 @@
             <input type="range" min="0" max="10" value="2" id="volumeSlider">
         </div>
     </div>
+    <div id="links">
+        <div><a href="http://127.0.0.1:5500/help.html">&nbsp;&nbsp;&nbsp;&nbsp;&#x3f;&nbsp;&nbsp;&nbsp;&nbsp;Help Page</a></div>
+        <div><a href="http://127.0.0.1:5500/theTeam.html">&#x1f91d; The Team Page</a></div>
+    </div>
+
     <div><input type="file" id="fileInput" accept="audio/*" multiple onchange="useFile(this.files)"></div>
     <div id="container">
         <div id="menuContainer">
             <div id="playButton" onclick="playToggle()">&#x25B6;</div>
-            <!-- <div id="stopButton" onclick="stopPlaying()"></div> -->
+            <i id="stopButton" class="fa fa-stop"></i>
             <div id="controlBPM">
                 <label for="setBPM">BPM</label>
                 <input id="setBPM" type="number" min="24" max="200" value="60">

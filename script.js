@@ -23,6 +23,7 @@ var timeline = [];
 var savedNotes = [];
 var fileBuffers = [];
 var sources = [];
+var cellNumber;
 
 window.onbeforeunload = function() {
     if (sequencerMode == 1) return "";
@@ -33,7 +34,8 @@ window.onload = function() {
     timeline = new Array();
     savedNotes = new Array();
     createHtmlNotes();
-    fillSequencer();
+    cellNumber = 16 * 5;
+    fillSequencer(0, 5);
     let selectBox = document.getElementById("instrumentBox");
     selectBox.addEventListener("change", function(event) {
         setInstrument(event.target.options[event.target.selectedIndex].id);
@@ -78,18 +80,18 @@ function createHtmlNotes() {
     }
 }
 
-function fillSequencer() {
+function fillSequencer(startColumn, groupsNumber) {
     let container = document.getElementById("timelineGrid");
-
-    let table = document.createElement("TABLE");
-    table.style.borderSpacing = "0px";
-    table.style.boxSizing = "border-box";
+    let table = document.getElementsByTagName("table");
+    if (table.length == 0) {
+        table = document.createElement("TABLE");
+    }
 
     for (let line = 87; line >= 0; line--) {
         let row = table.insertRow(0);
-        row.style.height = "18px";
+        row.setAttribute("id", "row" + line);
 
-        for (let column = 0; column < 16 * 5; column++) {
+        for (let column = startColumn; column < startColumn + 16 * groupsNumber; column++) {
             let cell = row.insertCell(column);
             cell.className = `${column}`;
             if ((column + 1) % 16 == 0) {
@@ -101,13 +103,6 @@ function fillSequencer() {
             else {
                 cell.style.borderRight = "0.5px solid #313233";
             }
-            cell.style.minWidth = "30px";
-            cell.style.boxSizing = "border-box";
-            
-            cell.style.borderBottom = "0.5px solid #313233";
-            cell.style.userSelect = "none";
-            cell.style.webkitUserSelect = "none";
-            cell.style.msUserSelect = "none";
             cell.id = keys[line];
             cell.addEventListener("mouseup", function(event) {
                 if (sequencerMode == 0 && event.target.textContent == "") {
@@ -119,43 +114,50 @@ function fillSequencer() {
                     event.target.textContent = "";
                     removeNote(event.target.id, event.target.className);
                 }
+                if (event.target.className > cellNumber - 16) {
+                    extendSequencer(cellNumber, 2);
+                    cellNumber += 2 * 16;
+                }
             });
         }
     }
 
     container.appendChild(table);
-    
-    // for (let line = 0; line < 88; line++) {
-    //     for (let column = 0; column < 88 * 3; column++) {
-    //         divElement = document.createElement("div");
-    //         divElement.setAttribute("class", column);
-            
-    //         divElement.style.color = "#383b3d";
-    //         divElement.style.userSelect = "none";
-    //         divElement.style.webkitUserSelect = "none";
-    //         divElement.style.msUserSelect = "none";
-    //         divElement.style.height = "2.7%";
-    //         divElement.style.width = "1%";
-    //         divElement.style.cssFloat = "left";
-    //         divElement.style.maxHeight = "18px";
-    //         // a = Math.floor(Math.random() * 256);
-    //         // b = Math.floor(Math.random() * 256);
-    //         // c = Math.floor(Math.random() * 256);
-    //         // divElement.style.backgroundColor = `rgb(${a}, ${b}, ${c})`;
-    //         divElement.style.boxSizing = "border-box";
-    //         divElement.style.borderBottom = "1px solid black";
-    //         divElement.style.borderRight = "1px solid black";
-    //         color: white;
-    // user-select: none;
-    // -moz-user-select: none;
-    // -khtml-user-select: none;
-    // -webkit-user-select: none;
-    // -o-user-select: none;
-    // height: 2%;
-    // width: 100%;
-    //         container.appendChild(divElement);
-    //     }
-    // }
+}
+
+function extendSequencer(startColumn, groupsNumber) {
+    for (let line = 0; line < 88; line++) {
+        let row = document.getElementById("row" + line);
+        
+        for (let column = startColumn; column < startColumn + 16 * groupsNumber; column++) {
+            let cell = row.insertCell(column);
+            cell.className = `${column}`;
+            if ((column + 1) % 16 == 0) {
+                cell.style.borderRight = "3px solid #132542";
+            }
+            else if ((column + 1) % 4 == 0 && (column + 1) % 16 != 0) {
+                cell.style.borderRight = "2px solid #132542";
+            }
+            else {
+                cell.style.borderRight = "0.5px solid #313233";
+            }
+            cell.id = keys[line];
+            cell.addEventListener("mouseup", function(event) {
+                if (sequencerMode == 0 && event.target.textContent == "") {
+                    event.target.textContent = event.target.id;
+                    addNote(event.target.id, event.target.className);
+                }
+                else if (sequencerMode == 1 && event.target.textContent != "") {
+                    event.target.textContent = "";
+                    removeNote(event.target.id, event.target.className);
+                }
+                if (event.target.className > cellNumber - 16) {
+                    extendSequencer(cellNumber, 2);
+                    cellNumber += 2 * 16;
+                }
+            });
+        }
+    }
 }
 
 function createNotes() {
@@ -177,7 +179,7 @@ function setInstrument(instrumentName) {
     xmlhttp.onload = function() {
         if (this.readyState == 4 && this.status == 200) {
             tempInstrument = JSON.parse(this.responseText);
-            keys = [];
+            // keys = [];
             for (const note in tempInstrument) {
                 audio.decodeAudioData(base64ToArrayBuffer(tempInstrument[note]), 
                 function(buffer) {
@@ -209,7 +211,7 @@ function playToggle() {
         bpm = bpmToMS(bpm);
         // get max de locatie?
         for (const time in timeline) {
-            
+
             for (const note in timeline[time]) {
                 playNoteBuffer(savedNotes[timeline[time][note]], time * bpm / 4000);
             }
