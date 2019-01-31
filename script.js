@@ -150,12 +150,21 @@ function extendSequencer(startColumn, groupsNumber) {
             }
             cell.id = keys[line];
             cell.addEventListener("mouseup", function(event) {
-                if (sequencerMode == 0 && event.target.textContent == "") {
+                if (sequencerMode == 0 && timeline[event.target.className] === undefined) {
                     event.target.textContent = event.target.id;
+                    event.target.style.backgroundColor = "#fa7528";
+                    addNote(event.target.id, event.target.className);
+                }
+                else if (sequencerMode == 0 && timeline[event.target.className].find(function(element) {
+                    return element == event.target.id + " " + currentInstrumentName;
+                }) === undefined) {
+                    event.target.textContent = event.target.id;
+                    event.target.style.backgroundColor = "#fa7528";
                     addNote(event.target.id, event.target.className);
                 }
                 else if (sequencerMode == 1 && event.target.textContent != "") {
                     event.target.textContent = "";
+                    event.target.style.backgroundColor = "#383b3d";
                     removeNote(event.target.id, event.target.className);
                 }
                 if (event.target.className > cellNumber - 16) {
