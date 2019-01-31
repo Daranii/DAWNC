@@ -97,6 +97,7 @@ body {
 }
 
 #stopButton:hover {
+    filter:invert(100);
     cursor: pointer;
 }
 
@@ -106,10 +107,12 @@ body {
 }
 
 #writeMusic:hover {
+    filter:invert(100);
     cursor: pointer;
 }
 
 #deleteMusic:hover {
+    filter:invert(100);
     cursor: pointer;
 }
 
