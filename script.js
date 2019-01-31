@@ -26,7 +26,7 @@ var sources = [];
 var cellNumber;
 
 window.onbeforeunload = function() {
-    return "";
+    if (timeline.length > 0) return "";
 };
 
 window.onload = function() {
@@ -200,7 +200,7 @@ function setInstrument(instrumentName) {
 
 
 function playToggle() {
-    button = document.getElementById("playButton");
+    button = document.getElementsByTagName("img")[0];
     
     if (playing == 0 && (timeline.length > 0 || fileBuffers.length > 0)) {
         sources = [];
@@ -209,7 +209,7 @@ function playToggle() {
                 playFile(fileBuffers[number]);
             }
         }
-        button.textContent = 0x23f8;
+        button.src = "data/pauseButton.png";
         bpm = document.getElementById("setBPM").value;
         bpm = bpmToMS(bpm);
         for (const time in timeline) {
@@ -236,19 +236,19 @@ function playToggle() {
         playing = 1;
     }
     else if (playing == 2) {
-        button.textContent = 0x23f8;
+        button.src = "data/playButton.png";
         audio.resume();
         playing = 1;
     }
     else if (playing == 1) {
-        button.textContent = 0x25B6;
+        button.src = "data/pauseButton.png";
         audio.suspend();
         playing = 2;
     }
 }
 
 function stop() {
-    button.textContent = 0x25B6;
+    button.src = "data/playButton.png";
     audio.resume();
     
     for (let number in sources) {
