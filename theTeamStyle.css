@@ -12,6 +12,20 @@ body {
     margin-top: 100px;
 }
 
+#links {
+    position: absolute;
+    top: 20px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    font-family: 'Acme', sans-serif;
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: #2c227d;
+}
+
 #title {
     font-family: 'Source Code Pro', monospace;
     margin-bottom: 50px;

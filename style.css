@@ -1,6 +1,18 @@
-header {
+header > h1 {
     text-align: center;
-    font-size: 2.6vh;
+    font-size: 5.4vh;
+    font-family: 'Acme', sans-serif;
+}
+
+#links {
+    position: absolute;
+    top: 20px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
     font-family: 'Acme', sans-serif;
 }
 
@@ -45,7 +57,7 @@ body {
     min-height: 3vh;
     width: 98vw;
     display: grid;
-    grid-template-columns: 1% 10% 20% 1% 1%;
+    grid-template-columns: 1% 2% 10% 20% 1% 1%;
     grid-column-gap: 1%;
     padding-top: 0.2%;
     color: white;
@@ -77,6 +89,16 @@ body {
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-select: none;
+}
+
+#stopButton {
+    font-size:2.4vh;
+    color:red;
+}
+
+#stopButton:hover {
+    color: white;
+    cursor: pointer;
 }
 
 #playButton:hover {
