@@ -1,6 +1,6 @@
 header > h1 {
     text-align: center;
-    font-size: 5.4vh;
+    font-size: 4.39vh;
     font-family: 'Acme', sans-serif;
 }
 
@@ -97,20 +97,22 @@ body {
 }
 
 #stopButton:hover {
-    color: white;
+    filter:invert(100);
     cursor: pointer;
 }
 
 #playButton:hover {
-    color: white;
+    filter:invert(100);
     cursor: pointer;
 }
 
 #writeMusic:hover {
+    filter:invert(100);
     cursor: pointer;
 }
 
 #deleteMusic:hover {
+    filter:invert(100);
     cursor: pointer;
 }
 

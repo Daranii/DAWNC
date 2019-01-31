@@ -26,7 +26,7 @@ var sources = [];
 var cellNumber;
 
 window.onbeforeunload = function() {
-    // if (sequencerMode == 1) return "";
+    if (timeline.length > 0) return "";
 };
 
 window.onload = function() {
@@ -150,12 +150,21 @@ function extendSequencer(startColumn, groupsNumber) {
             }
             cell.id = keys[line];
             cell.addEventListener("mouseup", function(event) {
-                if (sequencerMode == 0 && event.target.textContent == "") {
+                if (sequencerMode == 0 && timeline[event.target.className] === undefined) {
                     event.target.textContent = event.target.id;
+                    event.target.style.backgroundColor = "#fa7528";
+                    addNote(event.target.id, event.target.className);
+                }
+                else if (sequencerMode == 0 && timeline[event.target.className].find(function(element) {
+                    return element == event.target.id + " " + currentInstrumentName;
+                }) === undefined) {
+                    event.target.textContent = event.target.id;
+                    event.target.style.backgroundColor = "#fa7528";
                     addNote(event.target.id, event.target.className);
                 }
                 else if (sequencerMode == 1 && event.target.textContent != "") {
                     event.target.textContent = "";
+                    event.target.style.backgroundColor = "#383b3d";
                     removeNote(event.target.id, event.target.className);
                 }
                 if (event.target.className > cellNumber - 16) {
@@ -186,14 +195,12 @@ function setInstrument(instrumentName) {
     xmlhttp.onload = function() {
         if (this.readyState == 4 && this.status == 200) {
             tempInstrument = JSON.parse(this.responseText);
-            // keys = [];
             for (const note in tempInstrument) {
                 audio.decodeAudioData(base64ToArrayBuffer(tempInstrument[note]), 
                 function(buffer) {
                     currentInstrumentNotes[note] = buffer;
                 });
             }
-            // set random color for background
         }
     };
     xmlhttp.open("GET", "data/" + instrumentName + audioType + ".json", true);
@@ -202,10 +209,7 @@ function setInstrument(instrumentName) {
 
 
 function playToggle() {
-    // console.log(timeline[0].find(function(element) {
-    //     return element == "A0" + " " + currentInstrumentName;
-    // }) === undefined);
-    button = document.getElementById("playButton");
+    button = document.getElementsByTagName("img")[0];
     
     if (playing == 0 && (timeline.length > 0 || fileBuffers.length > 0)) {
         sources = [];
@@ -214,10 +218,9 @@ function playToggle() {
                 playFile(fileBuffers[number]);
             }
         }
-        button.textContent = 0x23f8;
+        button.src = "data/pauseButton.png";
         bpm = document.getElementById("setBPM").value;
         bpm = bpmToMS(bpm);
-        // get max de locatie?
         for (const time in timeline) {
 
             for (const note in timeline[time]) {
@@ -242,19 +245,19 @@ function playToggle() {
         playing = 1;
     }
     else if (playing == 2) {
-        button.textContent = 0x23f8;
+        button.src = "data/playButton.png";
         audio.resume();
         playing = 1;
     }
     else if (playing == 1) {
-        button.textContent = 0x25B6;
+        button.src = "data/pauseButton.png";
         audio.suspend();
         playing = 2;
     }
 }
 
 function stop() {
-    button.textContent = 0x25B6;
+    button.src = "data/playButton.png";
     audio.resume();
     
     for (let number in sources) {
@@ -264,7 +267,6 @@ function stop() {
 }
 
 function bpmToMS(bpmValue, tempo) {
-    // if tempo 4, 8, ...
     return 60000 / bpmValue;
 }
 
@@ -324,7 +326,6 @@ function playNote(note, timeStart = 0, timeRampTo = 1) {
 }
 
 function addNote(noteName, sequencerTime) {
-    // regex daca nota exista pentru instrumentul dat
     if (Array.isArray(timeline[sequencerTime])) {
         timeline[sequencerTime].push(noteName + " " + currentInstrumentName);
         if (savedNotes[noteName + " " + currentInstrumentName] === undefined)
@@ -388,9 +389,3 @@ function deleteMode() {
     document.getElementById("deleteMusic").style.color = "#ff0000";
     sequencerMode = 1;
 }
-
-
-
-// for using local files: https://stackoverflow.com/questions/13110007/web-audio-api-how-to-play-and-stop-audio
-// multiple types of instruments on same note at same time
-// https://ericbidelman.tumblr.com/post/13471195250/web-audio-api-how-to-playing-audio-based-on-user
