@@ -26,7 +26,7 @@ var sources = [];
 var cellNumber;
 
 window.onbeforeunload = function() {
-    // if (sequencerMode == 1) return "";
+    return "";
 };
 
 window.onload = function() {
@@ -186,14 +186,12 @@ function setInstrument(instrumentName) {
     xmlhttp.onload = function() {
         if (this.readyState == 4 && this.status == 200) {
             tempInstrument = JSON.parse(this.responseText);
-            // keys = [];
             for (const note in tempInstrument) {
                 audio.decodeAudioData(base64ToArrayBuffer(tempInstrument[note]), 
                 function(buffer) {
                     currentInstrumentNotes[note] = buffer;
                 });
             }
-            // set random color for background
         }
     };
     xmlhttp.open("GET", "data/" + instrumentName + audioType + ".json", true);
@@ -202,9 +200,6 @@ function setInstrument(instrumentName) {
 
 
 function playToggle() {
-    // console.log(timeline[0].find(function(element) {
-    //     return element == "A0" + " " + currentInstrumentName;
-    // }) === undefined);
     button = document.getElementById("playButton");
     
     if (playing == 0 && (timeline.length > 0 || fileBuffers.length > 0)) {
@@ -217,7 +212,6 @@ function playToggle() {
         button.textContent = 0x23f8;
         bpm = document.getElementById("setBPM").value;
         bpm = bpmToMS(bpm);
-        // get max de locatie?
         for (const time in timeline) {
 
             for (const note in timeline[time]) {
@@ -264,7 +258,6 @@ function stop() {
 }
 
 function bpmToMS(bpmValue, tempo) {
-    // if tempo 4, 8, ...
     return 60000 / bpmValue;
 }
 
@@ -324,7 +317,6 @@ function playNote(note, timeStart = 0, timeRampTo = 1) {
 }
 
 function addNote(noteName, sequencerTime) {
-    // regex daca nota exista pentru instrumentul dat
     if (Array.isArray(timeline[sequencerTime])) {
         timeline[sequencerTime].push(noteName + " " + currentInstrumentName);
         if (savedNotes[noteName + " " + currentInstrumentName] === undefined)
@@ -388,9 +380,3 @@ function deleteMode() {
     document.getElementById("deleteMusic").style.color = "#ff0000";
     sequencerMode = 1;
 }
-
-
-
-// for using local files: https://stackoverflow.com/questions/13110007/web-audio-api-how-to-play-and-stop-audio
-// multiple types of instruments on same note at same time
-// https://ericbidelman.tumblr.com/post/13471195250/web-audio-api-how-to-playing-audio-based-on-user
