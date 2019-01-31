@@ -19,16 +19,15 @@ var sequencerMode = 0;
 var playing = 0;
 var playingID = [];
 var timeBarInterval;
-var timeline = [];
+var timeline = new Array([]);
 var savedNotes = [];
 var fileBuffers = [];
 var sources = [];
 var cellNumber;
 
 window.onbeforeunload = function() {
-    if (sequencerMode == 1) return "";
+    // if (sequencerMode == 1) return "";
 };
-
 
 window.onload = function() {
     timeline = new Array();
@@ -105,13 +104,21 @@ function fillSequencer(startColumn, groupsNumber) {
             }
             cell.id = keys[line];
             cell.addEventListener("mouseup", function(event) {
-                if (sequencerMode == 0 && event.target.textContent == "") {
+                if (sequencerMode == 0 && timeline[event.target.className] === undefined) {
+                    event.target.textContent = event.target.id;
+                    event.target.style.backgroundColor = "#fa7528";
+                    addNote(event.target.id, event.target.className);
+                }
+                else if (sequencerMode == 0 && timeline[event.target.className].find(function(element) {
+                    return element == event.target.id + " " + currentInstrumentName;
+                }) === undefined) {
                     event.target.textContent = event.target.id;
                     event.target.style.backgroundColor = "#fa7528";
                     addNote(event.target.id, event.target.className);
                 }
                 else if (sequencerMode == 1 && event.target.textContent != "") {
                     event.target.textContent = "";
+                    event.target.style.backgroundColor = "#383b3d";
                     removeNote(event.target.id, event.target.className);
                 }
                 if (event.target.className > cellNumber - 16) {
@@ -195,18 +202,19 @@ function setInstrument(instrumentName) {
 
 
 function playToggle() {
-    console.log(playing);
+    // console.log(timeline[0].find(function(element) {
+    //     return element == "A0" + " " + currentInstrumentName;
+    // }) === undefined);
+    button = document.getElementById("playButton");
     
     if (playing == 0 && (timeline.length > 0 || fileBuffers.length > 0)) {
-        console.log(timeline.length + "   " + timeline);
         sources = [];
         if (fileBuffers.length > 0) {
             for (const number in fileBuffers) {
                 playFile(fileBuffers[number]);
             }
         }
-        button = document.getElementById("playButton");
-        // button.textContent = "";
+        button.textContent = 0x23f8;
         bpm = document.getElementById("setBPM").value;
         bpm = bpmToMS(bpm);
         // get max de locatie?
@@ -234,19 +242,25 @@ function playToggle() {
         playing = 1;
     }
     else if (playing == 2) {
+        button.textContent = 0x23f8;
         audio.resume();
         playing = 1;
     }
     else if (playing == 1) {
+        button.textContent = 0x25B6;
         audio.suspend();
         playing = 2;
     }
 }
 
 function stop() {
-    for (let number in source) {
-        source[number].stop();
+    button.textContent = 0x25B6;
+    audio.resume();
+    
+    for (let number in sources) {
+        sources[number].stop(0);
     }
+    playing = 0;
 }
 
 function bpmToMS(bpmValue, tempo) {
@@ -270,24 +284,27 @@ function useFile() {
     fileBuffers = [];
     let files = [];
     let addedFiles = document.getElementById("fileInput").files;
-    // for
-    files.push(new Blob([addedFiles[0]]));
-    let reader = new FileReader();
-    reader.readAsArrayBuffer(files[0]);
-    reader.onload = function () {
-        audio.decodeAudioData(reader.result, 
-            function (buffer) {
-                fileBuffers.push(buffer);
-        });
+    for (const number in addedFiles) {
+        files.push(new Blob([addedFiles[number]]));
+        let reader = new FileReader();
+        reader.readAsArrayBuffer(files[number]);
+        reader.onload = function () {
+            audio.decodeAudioData(reader.result, 
+                function (buffer) {
+                    fileBuffers.push(buffer);
+            });
+        };
     }
 }
 
 function playNoteBuffer(noteBuffer, timeStart = 0, timeRampTo = 2) {
-    let volume = audio.createGain();
+    let volume = "";
+    volume = audio.createGain();
     volume.gain.value = volumeValueSequencer;
     volume.connect(audio.destination);
     // volume.gain.exponentialRampToValueAtTime(0.01, audio.currentTime + timeStart + timeRampTo);
-    let source = audio.createBufferSource();
+    let source = "";
+    source = audio.createBufferSource();
     source.buffer = noteBuffer;
     source.connect(volume);
     source.start(audio.currentTime + timeStart, 0);
@@ -323,8 +340,22 @@ function addNote(noteName, sequencerTime) {
 }
 
 function removeNote(noteName, sequencerTime) {
-    let index = timeline[sequencerTime].indexOf(noteName + " " + currentInstrumentName);
-    timeline[sequencerTime].splice(index, 1);
+    console.log(timeline[sequencerTime]);
+    let indexes;
+    timeline[sequencerTime].find(function (element) {
+        let result = [];
+        regex = new RegExp(noteName + ".*");
+        for (let number in timeline[sequencerTime]) {
+            let list = regex.exec(timeline[sequencerTime][number]);
+            if (list != null) {
+                result.push(timeline[sequencerTime].indexOf(list[0]));
+            }
+        }
+        indexes = result
+    });
+    for (let number in indexes) {
+        timeline[sequencerTime].splice(indexes[number], 1);
+    }
 }
 
 function createOptions() {
@@ -361,5 +392,5 @@ function deleteMode() {
 
 
 // for using local files: https://stackoverflow.com/questions/13110007/web-audio-api-how-to-play-and-stop-audio
-//stop, sources, multiple types of instruments on same note at same time
+// multiple types of instruments on same note at same time
 // https://ericbidelman.tumblr.com/post/13471195250/web-audio-api-how-to-playing-audio-based-on-user
