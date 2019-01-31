@@ -29,7 +29,8 @@
                 <li><a href="#arhitectura-ansamblu">5. Arhitectura de ansamblu</a></li>
                 <li><a href="#tehnologii-util">6. Tehnologii Utilizate</a></li>
                 <li><a href="#modelare-date">7. Modelarea datelor proprii</a></li>
-                <li><a href="#membrii-echipei">8. Membrii echipei</a></li>
+                <li><a href="#api">8. API folosit</a></li>
+                <li><a href="#membrii-echipei">9. Membrii echipei</a></li>
             </ul>
         </aside>
     </section>
@@ -85,7 +86,8 @@
                 În cazul în care un utilizator greșește și adaugă o notă muzicală în mod greșit, acesta va avea posibilitatea de a șterge nota respectivă.
                 O altă funcționalitate disponibilă utilizatorului va fi aceea de a seta un anumit număr de bătăi pe minut aferent melodiei create. Astfel, utilizatorul va avea posibilitatea de a crea o gamă variată de creații muzicale, acesta nefiind limitat la doar un anumit tempo.
                 Utilizatorul își va alege secvențial instrumentele pe care le va folosi în melodia sa. Aceste instrumente vor fi predefinite.
-                Utilizatorul va avea în orice moment posibilitatea de a porni/opri melodia în statusul ei curent pentru a își analiza munca curentă. Astfel, acesta va putea lua decizii în prealabil referioare la varianta finală a creației acestuia.
+                Utilizatorul va avea în orice moment posibilitatea de a porni/opri melodia în statusul ei curent pentru a își analiza munca curentă. Astfel, acesta va putea lua decizii în prealabil referioare la varianta finală a creației acestuia. <br><br>
+                De asemenea un utilizator va avea posibilitatea de a incarca un fisier .mp3 pentru a-l reda in cadrul aplicatiei web.
             </p>
         </blockquote>
     </section>
@@ -102,13 +104,13 @@
         <figure typeof="sa:Image4">
             <img src="img/Arhitectura1.jpg" style="width:720px;height:130px;display:inline;border: 2px solid black">
             <figcaption>
-                Arhitectura siteului
+                Arhitectura site-ului
             </figcaption>
         </figure>
         <figure typeof="sa:Image5">
             <img src="img/Arhitectura2.jpg" style="width:720px;height:350px;display:inline;border: 2px solid black">
             <figcaption>
-                Arhitectura siteului
+                Arhitectura site-ului
             </figcaption>
         </figure>
         <figure typeof="sa:Image6">
@@ -123,27 +125,11 @@
                 Diagrama use case pentru creare
             </figcaption>
         </figure>
-        <figure typeof="sa:Image8">
-            <img src="img/UML_ToolbarToolBase.jpg" style="width:240px;height:440px;display:inline;border: 2px solid black">
-            <figcaption>
-                Diagrama de clasa pentru Toolbar
-            </figcaption>
-        </figure>
-        <figure typeof="sa:Image8">
-            <img src="img/UML_SequencerMusicalNote.jpg" style="width:270px;height:460px;display:inline;border: 2px solid black">
-            <figcaption>
-                Diagrama de clasa pentru Sequencer
-            </figcaption>
-        </figure>
     </section>
     <section id="#tehnologii-util">
         <h2>6. Tehnologii utilizate</h2>
         <blockquote>
             <p>
-                <h3>Web Storage</h3>
-                Web Storage poate stoca date local in web browserul utilizatorului.<br>
-                Permite stocarea de date mult mai mari fara a afecta performanta siteului si este mai securizat.
-
                 <h3>Javascript:</h3>
                 Domină în applicațiile web deoarece este limbajul nativ în browser.<br>
                 Este usor de folosit împrună cu limbajul HTML.<br>
@@ -184,8 +170,17 @@
             </figcaption>
         </figure>
     </section>
+    <section typeof="sa:AuthorsList" id="api">
+        <h2>8. API folosit</h2>
+        <h3> Web Audio API </h3>
+        <p>control mai fin al audioului | 
+            Am decis la nivel de echipa sa folosim aces API deoarece ne ofera mult mai multa flexibilitate decat elementul audio din HTML5. <br>
+            Prin flexibilitate ne referim la posibilitatea de a altera din JavaScript fiecare aspect al sunetului redat. <br>
+            De asemenea, un alt beneficiu adus de aces API pe langa oferirea unui control mai fin al sunetului redat este faptul ca este proiectat pentru un mod de lucru modular.
+        </p>
+    </section>
     <section typeof="sa:AuthorsList" id="membrii-echipei">
-        <h2>8. Membrii echipei</h2>
+        <h2>9. Membrii echipei</h2>
         <ol>
             <li typeof="sa:ContributorRole" property="schema:author">
                 <a href="https://github.com/Daranii" typeof="schema:Person">
